@@ -1,0 +1,24 @@
+{
+  "name": "paisagens-legais",
+  "version": "1.0.0",
+  "description": "This package is a bot to tweets cool landscapes images",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "cd ./dist/ && node ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babel-watch": "babel src -d dist --watch",
+    "babel": "babel src -d dist"
+  },
+  "author": "caiomarqs",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.8.7",
+    "canvas": "^2.6.1",
+    "twit": "^2.2.11"
+  }
+}
