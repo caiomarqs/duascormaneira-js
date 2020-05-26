@@ -15,7 +15,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Image = _canvas["default"].Image;
-var timeInMinutes = 15;
+var timeInMinutes = 59;
 var T = new _twit["default"]({
   consumer_key: _config["default"]["consumer_key"],
   consumer_secret: _config["default"]["consumer_secret"],
@@ -30,14 +30,31 @@ var genareteColor = function genareteColor() {
   var r = Math.floor(Math.random() * 256);
   var g = Math.floor(Math.random() * 256);
   var b = Math.floor(Math.random() * 256);
-  return "rgb(" + r + "," + g + "," + b + ")";
+  return [r, g, b];
+};
+
+var totalHex = function totalHex(cor) {
+  var r = rgbToHex(cor[0]);
+  var g = rgbToHex(cor[1]);
+  var b = rgbToHex(cor[2]);
+  return "#".concat(r).concat(g).concat(b);
+};
+
+var rgbToHex = function rgbToHex(cor) {
+  var hex = Number(cor).toString(16);
+
+  if (hex.length < 2) {
+    hex = "0" + hex;
+  }
+
+  return hex;
 };
 
 var tweet = function tweet() {
   var cor1 = genareteColor();
   var cor2 = genareteColor();
   contex.beginPath();
-  contex.fillStyle = cor1;
+  contex.fillStyle = "rgb(".concat(cor1[0], ",").concat(cor1[1], ",").concat(cor1[2], ")");
   contex.moveTo(0, 0);
   contex.lineTo(0, 400);
   contex.lineTo(800, 400);
@@ -45,11 +62,13 @@ var tweet = function tweet() {
   contex.fill();
   contex.beginPath();
   contex.moveTo(0, 400);
-  contex.fillStyle = cor2;
+  contex.fillStyle = "rgb(".concat(cor2[0], ",").concat(cor2[1], ",").concat(cor2[2], ")");
   contex.lineTo(0, 800);
   contex.lineTo(800, 800);
   contex.lineTo(800, 400);
   contex.fill();
+  var hex1 = totalHex(cor1);
+  var hex2 = totalHex(cor2);
 
   var fs = require('fs'),
       out = fs.createWriteStream(__dirname + '/text.png'),
@@ -64,7 +83,7 @@ var tweet = function tweet() {
     // now we can reference the media and post a tweet (media will attach to the tweet)
     var mediaIdStr = data.media_id_string;
     var params = {
-      status: "1: ".concat(cor1, " \n2: ").concat(cor2),
+      status: "".concat(hex1, "\n").concat(hex2),
       media_ids: [mediaIdStr]
     };
     T.post('statuses/update', params, function (err, data, response) {
